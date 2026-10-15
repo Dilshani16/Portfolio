@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,21 @@
             emailjs.init("YOUR_PUBLIC_KEY"); // Replace with  EmailJS Public Key
         })();
     </script>
+    <script>
+        // Apply the saved/system theme before the page renders to prevent flashing.
+        (() => {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.classList.toggle(
+                'dark',
+                savedTheme ? savedTheme === 'dark' : prefersDark
+            );
+        })();
+    </script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @custom-variant dark (&:where(.dark, .dark *));
+    </style>
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,6 +39,11 @@
             --primary: #7c3aed;
             --secondary: #ec4899;
             --accent: #f59e0b;
+            color-scheme: light;
+        }
+
+        :root.dark {
+            color-scheme: dark;
         }
         
         @keyframes float {
@@ -67,13 +86,15 @@
         }
         
         .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.72);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
         }
         
         .dark .glass-effect {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(17, 24, 39, 0.72);
+            border-color: rgba(255, 255, 255, 0.1);
         }
         
         .skill-bar {
@@ -167,20 +188,22 @@
             <span class="text-purple-500">.</span>
         </a>
         
-        <ul class="hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-8 py-3 glass-effect shadow-lg">
+        <ul class="hidden md:flex items-center gap-4 lg:gap-5 rounded-full px-6 py-3 glass-effect shadow-lg">
             <li><a href="#home" class="hover:text-purple-400 transition-colors duration-300">Home</a></li>
             <li><a href="#about" class="hover:text-purple-400 transition-colors duration-300">About</a></li>
             <li><a href="#skills" class="hover:text-purple-400 transition-colors duration-300">Skills</a></li>
             <li><a href="#projects" class="hover:text-purple-400 transition-colors duration-300">Projects</a></li>
+            <li><a href="#research" class="hover:text-purple-400 transition-colors duration-300">Research</a></li>
+            <li><a href="#certificates" class="hover:text-purple-400 transition-colors duration-300">Certificates</a></li>
             <li><a href="#contact" class="hover:text-purple-400 transition-colors duration-300">Contact</a></li>
         </ul>
 
         <div class="flex items-center gap-4">
-            <button id="theme-toggle" class="p-2 rounded-full glass-effect hover:scale-110 transition-transform">
-                <i class="fas fa-moon dark:fa-sun"></i>
+            <button id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode" class="p-2 rounded-full glass-effect hover:scale-110 transition-transform">
+                <i class="fas fa-moon" aria-hidden="true"></i>
             </button>
             
-            <a href="#contact" class="hidden lg:flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+            <a href="#contact" class="hidden xl:flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
                 Let's Talk <i class="fas fa-arrow-right text-sm"></i>
             </a>
 
@@ -191,7 +214,7 @@
 
         <!-- Mobile Menu -->
         <div id="sideMenu" class="md:hidden fixed top-0 right-0 h-full w-64 z-50 transform translate-x-full transition-transform duration-500">
-            <div class="h-full glass-effect p-8 flex flex-col">
+            <div class="h-full glass-effect p-8 flex flex-col overflow-y-auto">
                 <div class="flex justify-between items-center mb-12">
                     <h2 class="text-2xl font-bold gradient-text">Menu</h2>
                     <button onclick="closeMenu()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -203,6 +226,8 @@
                     <li><a href="#about" onclick="closeMenu()" class="text-lg hover:text-purple-400 transition-colors duration-300 block py-2">About</a></li>
                     <li><a href="#skills" onclick="closeMenu()" class="text-lg hover:text-purple-400 transition-colors duration-300 block py-2">Skills</a></li>
                     <li><a href="#projects" onclick="closeMenu()" class="text-lg hover:text-purple-400 transition-colors duration-300 block py-2">Projects</a></li>
+                    <li><a href="#research" onclick="closeMenu()" class="text-lg hover:text-purple-400 transition-colors duration-300 block py-2">Research</a></li>
+                    <li><a href="#certificates" onclick="closeMenu()" class="text-lg hover:text-purple-400 transition-colors duration-300 block py-2">Certificates</a></li>
                     <li><a href="#contact" onclick="closeMenu()" class="text-lg hover:text-purple-400 transition-colors duration-300 block py-2">Contact</a></li>
                 </ul>
                 <div class="pt-8 border-t border-gray-200 dark:border-gray-700">
@@ -720,6 +745,160 @@
         </div>
     </section>
 
+    <!-- Research Section -->
+    <section id="research" class="py-20 px-5 lg:px-8 xl:px-[8%] scroll-mt-20 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    My <span class="gradient-text">Research</span>
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Exploring inclusive technology for meaningful learning experiences
+                </p>
+            </div>
+
+            <article class="max-w-5xl mx-auto p-6 md:p-10 rounded-3xl glass-effect shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="w-20 h-20 shrink-0 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                        <i class="fas fa-microscope text-4xl text-purple-500" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="flex-1">
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-purple-500/15 text-purple-600 dark:text-purple-300">Research Project</span>
+                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-amber-500/15 text-amber-700 dark:text-amber-300">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                                Under Review
+                            </span>
+                        </div>
+
+                        <h3 class="text-2xl md:text-3xl font-bold leading-tight mb-4">
+                            Smart Learn: An Adaptive Web-Based Learning Platform for Neurodevelopmental Learning Disorders
+                        </h3>
+
+                        <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6">
+                            An adaptive web-based learning platform designed to support learners with neurodevelopmental learning disorders through more inclusive and personalized learning experiences.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm">Adaptive Learning</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm">Inclusive Education</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm">Web Platform</span>
+                        </div>
+
+                        <a href="https://r26-it-114-jflg.vercel.app/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-7 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 hover:gap-4 transition-all duration-300">
+                            View Research Project <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="max-w-5xl mx-auto mt-8 p-6 md:p-10 rounded-3xl glass-effect shadow-xl hover:-translate-y-2 transition-all duration-300">
+                <div class="flex flex-col md:flex-row gap-8 items-start">
+                    <div class="w-20 h-20 shrink-0 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+                        <i class="fas fa-pen-nib text-4xl text-blue-500" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="flex-1">
+                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-blue-500/15 text-blue-600 dark:text-blue-300">Research Model</span>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-500/15 text-green-700 dark:text-green-300">GitHub Project</span>
+                        </div>
+
+                        <h3 class="text-2xl md:text-3xl font-bold leading-tight mb-4">
+                            Sinhala Handwriting Model
+                        </h3>
+
+                        <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6">
+                            A machine learning research project focused on recognizing Sinhala handwriting and supporting intelligent handwriting analysis.
+                        </p>
+
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm">Sinhala OCR</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm">Handwriting Recognition</span>
+                            <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm">Machine Learning</span>
+                        </div>
+
+                        <a href="https://github.com/Dilshani16/Sinhala-Handwriting-Model" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-7 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 hover:gap-4 transition-all duration-300">
+                            View GitHub Repository <i class="fab fa-github" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section id="certificates" class="py-20 px-5 lg:px-8 xl:px-[8%] scroll-mt-20 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    My <span class="gradient-text">Certificates</span>
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Professional courses and learning achievements
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <article class="p-6 rounded-2xl glass-effect shadow-lg hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-5">
+                        <i class="fab fa-python text-2xl text-blue-500" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Python for Beginners</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">University of Moratuwa</p>
+                    <button type="button" data-certificate="./certificates/python-for-beginners.pdf" data-title="Python for Beginners" aria-label="View Python for Beginners certificate" class="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+                        View Certificate <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </article>
+
+                <article class="p-6 rounded-2xl glass-effect shadow-lg hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-5">
+                        <i class="fas fa-brain text-2xl text-purple-500" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">AI &amp; Machine Learning</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">Stage 01 Certificate</p>
+                    <button type="button" data-certificate="./certificates/ai-ml-stage-01.pdf" data-title="AI &amp; Machine Learning" aria-label="View AI and Machine Learning certificate" class="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+                        View Certificate <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </article>
+
+                <article class="p-6 rounded-2xl glass-effect shadow-lg hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-500/20 flex items-center justify-center mb-5">
+                        <i class="fas fa-code text-2xl text-pink-500" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Web Design for Beginners</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">University of Moratuwa</p>
+                    <button type="button" data-certificate="./certificates/web-design-for-beginners.pdf" data-title="Web Design for Beginners" aria-label="View Web Design for Beginners certificate" class="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+                        View Certificate <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </article>
+
+                <article class="p-6 rounded-2xl glass-effect shadow-lg hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-5">
+                        <i class="fab fa-figma text-2xl text-orange-500" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Figma for UX Design</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">Certificate of Completion</p>
+                    <button type="button" data-certificate="./certificates/figma-for-ux-design.pdf" data-title="Figma for UX Design" aria-label="View Figma for UX Design certificate" class="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+                        View Certificate <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </article>
+
+                <article class="p-6 rounded-2xl glass-effect shadow-lg hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-5">
+                        <i class="fas fa-laptop-code text-2xl text-cyan-500" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Front-End Web Development</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">University of Moratuwa</p>
+                    <button type="button" data-certificate="./certificates/front-end-web-development.pdf" data-title="Front-End Web Development" aria-label="View Front-End Web Development certificate" class="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
+                        View Certificate <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </article>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="py-20 px-5 lg:px-8 xl:px-[8%] scroll-mt-20 relative z-10">
         <div class="max-w-7xl mx-auto">
@@ -840,6 +1019,22 @@
         </div>
     </footer>
 
+    <!-- View-only Certificate Modal -->
+    <div id="certificate-modal" class="hidden fixed inset-0 z-[100] items-center justify-center bg-black/80 p-4" role="dialog" aria-modal="true" aria-labelledby="certificate-modal-title">
+        <div class="w-full max-w-5xl h-[90vh] rounded-2xl bg-white dark:bg-gray-900 shadow-2xl overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between gap-4 px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                <div>
+                    <h2 id="certificate-modal-title" class="text-lg md:text-xl font-bold">Certificate</h2>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">View-only preview</p>
+                </div>
+                <button id="close-certificate-modal" type="button" aria-label="Close certificate viewer" class="w-10 h-10 rounded-full glass-effect flex items-center justify-center hover:scale-110 transition-transform">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <iframe id="certificate-viewer" title="Certificate preview" class="w-full flex-1 bg-gray-100 dark:bg-gray-800" referrerpolicy="no-referrer" src="about:blank"></iframe>
+        </div>
+    </div>
+
     <script>
         // Initialize Typed.js
         const typed = new Typed('#typed-text', {
@@ -853,17 +1048,70 @@
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = themeToggle.querySelector('i');
-        
+
+        function updateThemeControls() {
+            const isDark = document.documentElement.classList.contains('dark');
+            themeIcon.classList.toggle('fa-sun', isDark);
+            themeIcon.classList.toggle('fa-moon', !isDark);
+
+            const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+            themeToggle.setAttribute('aria-label', label);
+            themeToggle.setAttribute('title', label);
+        }
+
+        updateThemeControls();
+
         themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            if (document.documentElement.classList.contains('dark')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeControls();
+        });
+
+        // View certificates in a sandboxed modal without browser PDF controls.
+        const certificateModal = document.getElementById('certificate-modal');
+        const certificateViewer = document.getElementById('certificate-viewer');
+        const certificateModalTitle = document.getElementById('certificate-modal-title');
+        const closeCertificateModalButton = document.getElementById('close-certificate-modal');
+        let activeCertificateButton = null;
+
+        function openCertificateModal(button) {
+            activeCertificateButton = button;
+            certificateModalTitle.textContent = button.dataset.title;
+            certificateViewer.src = `${button.dataset.certificate}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`;
+            certificateModal.classList.remove('hidden');
+            certificateModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            closeCertificateModalButton.focus();
+        }
+
+        function closeCertificateModal() {
+            certificateModal.classList.add('hidden');
+            certificateModal.classList.remove('flex');
+            certificateViewer.src = 'about:blank';
+            document.body.style.overflow = '';
+            activeCertificateButton?.focus();
+            activeCertificateButton = null;
+        }
+
+        document.querySelectorAll('[data-certificate]').forEach(button => {
+            button.addEventListener('click', () => openCertificateModal(button));
+        });
+
+        closeCertificateModalButton.addEventListener('click', closeCertificateModal);
+        certificateModal.addEventListener('click', event => {
+            if (event.target === certificateModal) closeCertificateModal();
+        });
+
+        document.addEventListener('keydown', event => {
+            if (certificateModal.classList.contains('hidden')) return;
+
+            if (event.key === 'Escape') closeCertificateModal();
+            if ((event.ctrlKey || event.metaKey) && ['s', 'p'].includes(event.key.toLowerCase())) {
+                event.preventDefault();
             }
         });
+
+        certificateViewer.addEventListener('contextmenu', event => event.preventDefault());
 
         // Navbar Scroll Effect
         const navBar = document.querySelector('nav');
